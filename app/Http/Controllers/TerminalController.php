@@ -48,15 +48,20 @@ class TerminalController extends Controller
 		}
 	}
 
-	public static function markAsPaired(Request $request)
+	public function markAsPaired(Request $request)
 	{
+		if(!WebhookController::isSignatureValid($request, "markAsPaired"))
+        {
+            return response()->json(null, 403);
+        }
+        
         $terminal = Terminal::where('code', $request->data['object']['device_code']['code'])->firstOrFail();
 		$terminal->paired = True;
 		$terminal->device_id = $request->data['object']['device_code']['device_id'];
 		$terminal->save();
 	}
 
-	public static function charge($terminalId, $order)
+	public static function charge($terminalId, $transaction)
 	{
 		$client = new SquareClient
 		([
@@ -67,7 +72,7 @@ class TerminalController extends Controller
 		$terminal = Terminal::findOrFail($terminalId);
 
 		$amount_money = new \Square\Models\Money();
-		$amount_money->setAmount($order->amount);
+		$amount_money->setAmount($transaction->amount);
 		$amount_money->setCurrency('GBP');
 
 		$tip_settings = new \Square\Models\TipSettings();
@@ -89,11 +94,13 @@ class TerminalController extends Controller
 
 		if ($api_response->isSuccess())
 		{
-			return $api_response->getResult();
+			$result = $api_response->getResult();
+			return true;
 		}
 		else
 		{
-			return $api_response->getErrors();
+			$errors = $api_response->getErrors();
+			return response()->json(json_encode($errors), 500);
 		}
 	}
 }

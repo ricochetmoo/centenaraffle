@@ -12,47 +12,18 @@
 					You're logged in!
 
 					<h1 class="text-2xl font-bold">Sell a ticket</h1>
-					
-					<form id="form">
-					<x-input-label for="name" :value="__('Name')" />
-
-					<x-text-input  class="block mt-1 w-full"
-									type="text"
-									name="name"
-									id="name" required />
-
-					<x-input-label for="email" :value="__('Email')" />
-
-					<x-text-input  class="block mt-1 w-full"
-									type="email"
-									name="email"
-									id="email" required />
-					
-					<x-input-label for="club" :value="__('club')" />
-
-					<x-text-input  class="block mt-1 w-full"
-									type="text"
-									name="club"
-									id="club" required />
 
 					<x-input-label for="number_of_tickets" :value="__('Number of Tickets')" />
 
-					<x-text-input  class="block mt-1 w-full"
+					<x-text-input id="number_of_tickets" class="block mt-1 w-full"
 									type="number"
-									name="number_of_tickets" onchange="updatePrice()" id="quantity" required />
+									name="number_of_tickets" required />
 
 					<x-input-error :messages="$errors->get('number_of_tickets')" class="mt-2" />
-					</form>
 
-					<x-primary-button class="mt-4" onclick="charge();">
+					<x-primary-button class="mt-4" onclick="chargeIos();">
                     {{ __('Sell') }}
                 	</x-primary-button>
-
-					<x-primary-button class="mt-4" onclick="cashCharge();">
-                    {{ __('Cash') }}
-                	</x-primary-button>
-
-					<h1 class="text-xl font-bold" id="price">£0</h1>
 				</div>
 			</div>
 		</div>
@@ -60,76 +31,30 @@
 </x-app-layout>
 
 <script>
-	function getAmount()
-	{
-		let quantity = document.querySelector("#quantity").value;
+    function chargeIos()
+    {
+        var dataParameter = {
+        amount_money: {
+        amount:        "200",
+        currency_code: "GBP"
+        },
 
-		let price = Math.floor(quantity / 3) * 5;
-		price += (quantity % 3) * 2;
+        // Replace this value with your application's callback URL
+        callback_url: "http://localhost:8000/api/callback",
 
-		return price;
-	}
+        // Replace this value with your application's ID
+        client_id: "sq0idp-BQTkwHLv_0MmWX3mO5rvwQ",
 
-    function updatePrice()
-	{
-		
+        version: "1.3",
+        notes: "notes for the transaction",
+        options: {
+        supported_tender_types: ["CREDIT_CARD","CASH","OTHER","SQUARE_GIFT_CARD","CARD_ON_FILE"*/]
+        }
+        };
 
-		document.querySelector("#price").innerHTML = "£" + getAmount();
-	}
-
-	async function postData(url = '', data = {}) {
-  // Default options are marked with *
-  const response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    headers: {
-      'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
-  });
-  return;
-}
-
-	function charge()
-	{
-		var form = document.querySelector("#form");
-		var elements = form.elements;
-		for (var i = 0, len = elements.length; i < len; ++i) {
-			elements[i].readOnly = true;
-		}
-		console.log({email: document.querySelector("#email").value, name: document.querySelector("#name").value, amount: parseInt(getAmount() * 100), club: document.querySelector("#club"), terminalId: 16})
-
-	postData('api/orderAndCharge', { email: document.querySelector("#email").value, name: document.querySelector("#name").value, amount: parseInt(getAmount() * 100), club: document.querySelector("#club").value, terminalId: 16})
-  .then(() => {
-    resetForm(); // JSON data parsed by `data.json()` call
-  });
-	}
-
-	function resetForm()
-	{
-		var form = document.querySelector("#form");
-		var elements = form.elements;
-		for (var i = 0, len = elements.length; i < len; ++i) {
-			elements[i].readOnly = false;
-			elements[i].value = "";
-		}
-
-		getAmount();
-	}
-
-	function cashCharge()
-	{
-		var form = document.querySelector("#form");
-		var elements = form.elements;
-		for (var i = 0, len = elements.length; i < len; ++i) {
-			elements[i].readOnly = true;
-		}
-		console.log({email: document.querySelector("#email").value, name: document.querySelector("#name").value, amount: parseInt(getAmount() * 100), club: document.querySelector("#club"), terminalId: 16})
-
-	postData('api/cash', { email: document.querySelector("#email").value, name: document.querySelector("#name").value, amount: parseInt(getAmount() * 100), club: document.querySelector("#club").value, terminalId: 16})
-  .then((data) => {
-    resetForm(); // JSON data parsed by `data.json()` call
-  });
-	}
+         window.location =
+        "square-commerce-v1://payment/create?data=" +
+        encodeURIComponent(JSON.stringify(dataParameter));
+    }
 </script>
 
