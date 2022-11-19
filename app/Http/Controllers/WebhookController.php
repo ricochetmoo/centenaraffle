@@ -8,7 +8,7 @@ class WebhookController extends Controller
 {
 	public static function in(Request $request)
 	{
-		$hash = hash_hmac("sha256", env('SQUARE_NOTIFICATION_URL').$request->path().$request->getContent(), env('SQUARE_SIGNATURE_KEY'), true);
+		$hash = hash_hmac("sha256", env('SQUARE_NOTIFICATION_URL').$request->getContent(), env('SQUARE_SIGNATURE_KEY'), true);
 		if (base64_encode($hash) != $request->header('X-Square-HmacSha256-Signature'))
 		{
 			return response()->json(null, 403);
