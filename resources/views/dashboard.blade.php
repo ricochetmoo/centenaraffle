@@ -103,9 +103,9 @@
 		for (var i = 0, len = elements.length; i < len; ++i) {
 			elements[i].readOnly = true;
 		}
-		console.log({email: document.querySelector("#email").value, name: document.querySelector("#name").value, amount: parseInt(getAmount() * 100), club: document.querySelector("#club"), terminalId: document.querySelector("#reader")})
+		console.log({email: document.querySelector("#email").value, name: document.querySelector("#name").value, amount: parseInt(getAmount() * 100), club: document.querySelector("#club").value, terminalId: document.querySelector("#reader").value})
 
-	postData('api/orderAndCharge', { email: document.querySelector("#email").value, name: document.querySelector("#name").value, amount: parseInt(getAmount() * 100), club: document.querySelector("#club").value, terminalId: document.querySelector("#reader")})
+	postData('api/orderAndCharge', { email: document.querySelector("#email").value, name: document.querySelector("#name").value, amount: parseInt(getAmount() * 100), club: document.querySelector("#club").value, terminalId: document.querySelector("#reader").value})
   .then(() => {
     resetForm(); // JSON data parsed by `data.json()` call
   });
@@ -130,9 +130,9 @@
 		for (var i = 0, len = elements.length; i < len; ++i) {
 			elements[i].readOnly = true;
 		}
-		console.log({email: document.querySelector("#email").value, name: document.querySelector("#name").value, amount: parseInt(getAmount() * 100), club: document.querySelector("#club"), terminalId: document.querySelector("#reader")})
+		console.log({email: document.querySelector("#email").value, name: document.querySelector("#name").value, amount: parseInt(getAmount() * 100), club: document.querySelector("#club").value, terminalId: document.querySelector("#reader").value})
 
-	postData('api/cash', { email: document.querySelector("#email").value, name: document.querySelector("#name").value, amount: parseInt(getAmount() * 100), club: document.querySelector("#club").value, terminalId: document.querySelector("#reader")})
+	postData('api/cash', { email: document.querySelector("#email").value, name: document.querySelector("#name").value, amount: parseInt(getAmount() * 100), club: document.querySelector("#club").value, terminalId: document.querySelector("#reader").value})
   .then((data) => {
     resetForm(); // JSON data parsed by `data.json()` call
   });
