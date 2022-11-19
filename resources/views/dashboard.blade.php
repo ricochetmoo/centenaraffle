@@ -42,6 +42,12 @@
 									name="number_of_tickets" onchange="updatePrice()" id="quantity" required />
 
 					<x-input-error :messages="$errors->get('number_of_tickets')" class="mt-2" />
+
+					<x-input-label for="reader" :value="__('Reader')" />
+
+					<x-text-input  class="block mt-1 w-full"
+									type="number"
+									name="reader" id="reader" required />
 					</form>
 
 					<x-primary-button class="mt-4" onclick="charge();">
@@ -99,7 +105,7 @@
 		}
 		console.log({email: document.querySelector("#email").value, name: document.querySelector("#name").value, amount: parseInt(getAmount() * 100), club: document.querySelector("#club"), terminalId: 16})
 
-	postData('api/orderAndCharge', { email: document.querySelector("#email").value, name: document.querySelector("#name").value, amount: parseInt(getAmount() * 100), club: document.querySelector("#club").value, terminalId: 16})
+	postData('api/orderAndCharge', { email: document.querySelector("#email").value, name: document.querySelector("#name").value, amount: parseInt(getAmount() * 100), club: document.querySelector("#club").value, terminalId: document.querySelector("#reader")})
   .then(() => {
     resetForm(); // JSON data parsed by `data.json()` call
   });
