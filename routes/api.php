@@ -34,4 +34,5 @@ Route::post('assign', [TicketController::class, 'assignTickets']);
 Route::post('draw', [TicketController::class, 'doDraw']);
 Route::get('ticket', [TicketController::class, 'index']);
 Route::get('howManyTickets', [TicketController::class, 'howManyTickets']);
+Route::get('winners', [TicketController::class, 'getWinners']);
 //Route::post('markAsPaid', [OrderController::class, 'markAsPaid']);

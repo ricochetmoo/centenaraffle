@@ -78,6 +78,7 @@ class TicketController extends Controller
 
         while ($prizes > 0)
         {
+            $won = false;
             while (!$won)
             {
                 $won = false;
@@ -98,6 +99,20 @@ class TicketController extends Controller
         }
 
         return response()->json(Ticket::where('winner', 1)->get(), 200);
+    }
+
+    public static function getWinners()
+    {
+        $tickets = Ticket::where('winner', 1)->get();
+
+        $winners = [];
+
+        foreach($tickets as $winner)
+        {
+            array_push($winners, $winner->order);
+        }
+
+        return response()->json($winners, 200);
     }
 
     public static function index()
