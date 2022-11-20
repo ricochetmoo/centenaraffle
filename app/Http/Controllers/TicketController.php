@@ -40,6 +40,32 @@ class TicketController extends Controller
         }
     }
 
+    public static function howManyTickets()
+    {
+        $orders = Order::all();
+
+        if ($orders->count() <= 0)
+        {
+            die();
+        }
+
+        $tickets = 0;
+
+        foreach ($orders as $order)
+        {
+            if ($order->paid)
+            {
+                $amount = $order->amount / 100;
+                $strips = floor($amount / 5);
+                $tickets += $strips * 3;
+                $tickets += ($amount % 5) / 2;
+                $tickets = floor($tickets);
+            }
+        }
+
+        return response()->json($tickets, 200);
+    }
+
     public static function doDraw(Request $request)
     {
         $prizes = $request->prizes;

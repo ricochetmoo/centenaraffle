@@ -33,4 +33,5 @@ Route::get('order/{id}', [OrderController::class, 'getOne']);
 Route::post('assign', [TicketController::class, 'assignTickets']);
 Route::post('draw', [TicketController::class, 'doDraw']);
 Route::get('ticket', [TicketController::class, 'index']);
+Route::get('howManyTickets', [TicketController::class, 'howManyTickets']);
 //Route::post('markAsPaid', [OrderController::class, 'markAsPaid']);
