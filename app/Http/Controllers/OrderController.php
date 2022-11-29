@@ -33,7 +33,7 @@ class OrderController extends Controller
         {
             if ($order->paid)
             {
-                if ($order->square_id == 'cash')
+                if ($order->squareId == 'cash')
                 {
                     $cash += $order->amount;
                 }
