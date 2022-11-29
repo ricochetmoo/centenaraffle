@@ -23,6 +23,30 @@ class OrderController extends Controller
         $order->save();
     }
 
+    public static function stats()
+    {
+        $orders = Order::all();
+        $cash = 0;
+        $card = 0;
+
+        foreach ($orders as $order)
+        {
+            if ($order->paid)
+            {
+                if ($order->square_id == 'cash')
+                {
+                    $cash += $order->amount;
+                }
+                else
+                {
+                    $card += $order->amount;
+                }
+            }
+        }
+
+        return response()->json(['cash' => $cash, 'card' => $card], 200);
+    }
+
     public function cashPayment(Request $request)
     {
         $order = new Order();
